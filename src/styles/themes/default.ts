@@ -1,19 +1,19 @@
 const defaultTheme = {
-  name: "default",
+  name: 'default',
   colors: {
-    text: "#3E4157",
-    complementaryText: "#9196AB",
+    text: '#3E4157',
+    complementaryText: '#9196AB',
 
-    primary: "#1A1731",
-    secondary: "#117EFF",
+    primary: '#1A1731',
+    secondary: '#117EFF',
 
-    background: "#FAFBFF",
-    lighterBackground: "#FFFFFF",
+    background: '#FAFBFF',
+    lighterBackground: '#FFFFFF',
 
-    border: "#CCCFDE",
-    lighterBorder: "#EBEEF6",
+    border: '#CCCFDE',
+    lighterBorder: '#EBEEF6',
 
-    shadow: "rgba(0, 0, 0, 0.25)",
+    shadow: 'rgba(0, 0, 0, 0.15)',
   },
 };
 

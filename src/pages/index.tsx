@@ -1,10 +1,13 @@
-import type { NextPage } from "next";
+import type { NextPage } from 'next';
+import SideBar from '../components/SideBar';
+
+import { Container } from '../styles/App';
 
 const Home: NextPage = () => {
   return (
-    <div>
-      <h1>Hello</h1>
-    </div>
+    <Container>
+      <SideBar />
+    </Container>
   );
 };
 
