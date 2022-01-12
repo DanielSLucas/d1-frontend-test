@@ -14,6 +14,9 @@ const defaultTheme = {
     lighterBorder: '#EBEEF6',
 
     shadow: 'rgba(0, 0, 0, 0.15)',
+
+    white: '#FFF',
+    lightBlue: '#00e1ff',
   },
 };
 

@@ -1,4 +1,4 @@
-import { createGlobalStyle } from "styled-components";
+import { createGlobalStyle } from 'styled-components';
 
 export default createGlobalStyle`
   @font-face {
@@ -17,12 +17,12 @@ export default createGlobalStyle`
     padding: 0;
     box-sizing: border-box;
     outline: 0;
-    transition: background-color 0.4s, color 0.1s !important;
+    transition: background-color 0.4s, color 0.1s;
   }
 
   body {
-    background: ${(props) => props.theme.colors.background};
-    color: ${(props) => props.theme.colors.text};
+    background: ${props => props.theme.colors.background};
+    color: ${props => props.theme.colors.text};
     -webkit-font-smoothing: antialiased;
   }
 
