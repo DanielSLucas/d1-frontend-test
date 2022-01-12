@@ -240,6 +240,12 @@ export const GridItem = styled.div`
 `;
 
 export const ResultsTable = styled.table`
+  overflow-y: scroll;
+
+  ::-webkit-scrollbar {
+    visibility: hidden;
+  }
+
   border-collapse: separate;
   border-spacing: 0 0.5rem;
 
@@ -247,7 +253,7 @@ export const ResultsTable = styled.table`
   max-width: 55rem;
   height: fit-content;
 
-  margin: 0 auto 0 16rem;
+  margin-left: 16rem;
   text-align: start;
 
   .centeredText {
@@ -256,8 +262,6 @@ export const ResultsTable = styled.table`
   }
 
   thead {
-    /* height: 2rem; */
-
     tr th {
       text-align: start;
       font-weight: normal;
@@ -271,8 +275,9 @@ export const ResultsTable = styled.table`
     height: fit-content;
 
     tr {
+      background: ${props => props.theme.colors.lighterBackground};
+
       td {
-        background: ${props => props.theme.colors.lighterBackground};
         padding: 1rem;
         width: 20%;
       }
@@ -280,6 +285,13 @@ export const ResultsTable = styled.table`
       td:first-child {
         font-family: GothamBold;
         width: 40%;
+      }
+
+      td:last-child {
+        display: flex;
+        div {
+          margin-right: 0.5rem;
+        }
       }
     }
   }

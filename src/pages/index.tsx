@@ -1,5 +1,6 @@
 import type { NextPage } from 'next';
 import Image from 'next/image';
+import useSWR from 'swr';
 
 import {
   SearchIcon,
@@ -11,6 +12,7 @@ import {
   BedIcon,
   CheckIcon,
 } from 'react-line-awesome';
+import { useCallback, useMemo, useState } from 'react';
 import acmeImg from '../../public/images/acme2.png';
 import Button from '../components/Button';
 import Input from '../components/Input';
@@ -28,7 +30,99 @@ import {
   ResultsTable,
 } from '../styles/App';
 
+type Filter = {
+  id: number;
+  name: string;
+  quantity: number;
+};
+
+type filterTextAndIcon = {
+  [id: number]: {
+    icon: JSX.Element;
+    text: string;
+  };
+};
+
+type Jorney = {
+  name: string;
+  status: number;
+  recipients: string;
+  success: string;
+  id: string;
+};
+
+const filtersTextAndIcons: filterTextAndIcon = {
+  0: {
+    icon: <ThIcon className="todas" />,
+    text: 'Todas',
+  },
+  1: {
+    icon: <PaperPlaneIcon className="enviando" />,
+    text: 'Enviando',
+  },
+  2: {
+    icon: <PlayCircleIcon className="ativadas" />,
+    text: 'Ativadas',
+  },
+  3: {
+    icon: <PenIcon className="configurando" />,
+    text: 'Configurando',
+  },
+  4: {
+    icon: <BedIcon className="ociosa" />,
+    text: 'Ociosa',
+  },
+  5: {
+    icon: <CheckIcon className="concluida" />,
+    text: 'Concluída',
+  },
+};
+
 const Home: NextPage = () => {
+  const [selectedFilter, setSelectedFilter] = useState({
+    id: 0,
+    name: 'Todos',
+    quantity: 8,
+    icon: <ThIcon className="todas" />,
+    text: 'Todas',
+  });
+
+  const filtersResponse = useSWR<Filter[]>(
+    'https://api-d1-test.herokuapp.com/api/filter',
+    async url => {
+      const response = await fetch(url);
+
+      return response.json();
+    },
+  );
+
+  const jorneysResponse = useSWR<Jorney[]>(
+    `https://api-d1-test.herokuapp.com/api/journey/${
+      selectedFilter.id === 0 ? '' : selectedFilter.id
+    }`,
+    async url => {
+      const response = await fetch(url);
+
+      return response.json();
+    },
+  );
+
+  const filters = useMemo(() => {
+    if (!filtersResponse.data) return null;
+
+    return filtersResponse.data.map(filter => {
+      return {
+        ...filter,
+        icon: filtersTextAndIcons[filter.id].icon,
+        text: filtersTextAndIcons[filter.id].text,
+      };
+    });
+  }, [filtersResponse.data]);
+
+  const handleFilterClick = useCallback((filter: typeof selectedFilter) => {
+    setSelectedFilter(filter);
+  }, []);
+
   return (
     <Container>
       <SideBar />
@@ -62,79 +156,34 @@ const Home: NextPage = () => {
 
           <div>
             <Aside>
-              <GridItem>
-                <ThIcon className="todas" />
-              </GridItem>
+              {filters &&
+                filters.map(filter => (
+                  <>
+                    <GridItem>{filter.icon}</GridItem>
 
-              <GridItem>
-                <button className="selected" type="button">
-                  Todas
-                </button>
-              </GridItem>
+                    <GridItem>
+                      <button
+                        type="button"
+                        onClick={() => handleFilterClick(filter)}
+                        className={
+                          selectedFilter.id === filter.id ? 'selected' : ''
+                        }
+                      >
+                        {filter.text}
+                      </button>
+                    </GridItem>
 
-              <GridItem>
-                <span className="selected">12</span>
-              </GridItem>
-
-              <GridItem>
-                <PaperPlaneIcon className="enviando" />
-              </GridItem>
-
-              <GridItem>
-                <button type="button">Enviando</button>
-              </GridItem>
-
-              <GridItem>
-                <span>12</span>
-              </GridItem>
-
-              <GridItem>
-                <PlayCircleIcon className="ativadas" />
-              </GridItem>
-
-              <GridItem>
-                <button type="button">Ativadas</button>
-              </GridItem>
-
-              <GridItem>
-                <span>15</span>
-              </GridItem>
-
-              <GridItem>
-                <PenIcon className="configurando" />
-              </GridItem>
-
-              <GridItem>
-                <button type="button">Configurando</button>
-              </GridItem>
-
-              <GridItem>
-                <span>25</span>
-              </GridItem>
-
-              <GridItem>
-                <BedIcon className="ociosa" />
-              </GridItem>
-
-              <GridItem>
-                <button type="button">Ociosa</button>
-              </GridItem>
-
-              <GridItem>
-                <span>45</span>
-              </GridItem>
-
-              <GridItem>
-                <CheckIcon className="concluida" />
-              </GridItem>
-
-              <GridItem>
-                <button type="button">Concluída</button>
-              </GridItem>
-
-              <GridItem>
-                <span>45</span>
-              </GridItem>
+                    <GridItem>
+                      <span
+                        className={
+                          selectedFilter.id === filter.id ? 'selected' : ''
+                        }
+                      >
+                        {filter.quantity}
+                      </span>
+                    </GridItem>
+                  </>
+                ))}
             </Aside>
 
             <ResultsTable>
@@ -147,23 +196,18 @@ const Home: NextPage = () => {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>Cobrança</td>
-                  <td className="centeredText">20.210.000</td>
-                  <td className="centeredText">30%</td>
-                  <td>
-                    <PaperPlaneIcon className="enviando" /> Enviando
-                  </td>
-                </tr>
-
-                <tr>
-                  <td>Divulgação Novos Serviços</td>
-                  <td className="centeredText">1.940.000</td>
-                  <td className="centeredText">10%</td>
-                  <td>
-                    <PaperPlaneIcon className="enviando" /> Enviando
-                  </td>
-                </tr>
+                {jorneysResponse.data &&
+                  jorneysResponse.data.map(jorney => (
+                    <tr key={jorney.id}>
+                      <td>{jorney.name}</td>
+                      <td className="centeredText">{jorney.recipients}</td>
+                      <td className="centeredText">{jorney.success}</td>
+                      <td>
+                        <div>{filtersTextAndIcons[jorney.status].icon}</div>
+                        {filtersTextAndIcons[jorney.status].text}
+                      </td>
+                    </tr>
+                  ))}
               </tbody>
             </ResultsTable>
           </div>
