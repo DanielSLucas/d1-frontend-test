@@ -9,6 +9,7 @@ const defaultTheme = {
 
     background: '#FAFBFF',
     lighterBackground: '#FFFFFF',
+    darkerBackground: '#E4E6F1',
 
     border: '#CCCFDE',
     lighterBorder: '#EBEEF6',

@@ -11,11 +11,60 @@ export const Content = styled.div`
   height: 100%;
   width: 100%;
 
-  padding: 0 5rem;
+  padding: 0 10rem;
 
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  main {
+    height: 100%;
+    width: 100%;
+
+    margin-top: 3rem;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    h1 {
+      font: 1rem GothamBold;
+    }
+
+    & > div {
+      height: 100%;
+      width: 100%;
+
+      margin-top: 2rem;
+
+      display: flex;
+      flex-direction: row;
+    }
+
+    .todas {
+      color: #d190dd;
+    }
+
+    .enviando {
+      color: #c1ca4f;
+    }
+
+    .ativadas {
+      color: #35c667;
+    }
+
+    .configurando {
+      color: #3fa8f4;
+    }
+
+    .ociosa {
+      color: #ebbd3e;
+    }
+
+    .concluida {
+      color: #9fabd5;
+    }
+  }
 `;
 
 export const Header = styled.div`
@@ -116,6 +165,7 @@ export const HeaderLeftSide = styled.div`
 `;
 
 export const HeaderRightSide = styled.div`
+  width: 35%;
   height: 2.5rem;
 
   display: flex;
@@ -129,11 +179,108 @@ export const HeaderRightSide = styled.div`
 
   & > div:first-child {
     margin-right: 1rem;
-    width: 18.5rem;
+    width: 65%;
   }
 
   & > div:last-child {
-    width: 9.375rem;
+    width: 35%;
     white-space: nowrap;
+  }
+`;
+
+export const Aside = styled.aside`
+  height: fit-content;
+
+  display: grid;
+  grid-template-columns: auto auto auto;
+  grid-column-gap: 1rem;
+  grid-row-gap: 0.5rem;
+
+  font-size: 1rem;
+
+  button {
+    border: 0;
+    background: 0;
+    text-align: start;
+  }
+
+  span {
+    height: 1.5rem;
+    width: 1.5rem;
+
+    background: ${props => props.theme.colors.darkerBackground};
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid ${props => props.theme.colors.lighterBorder};
+    border-radius: 50%;
+
+    font-family: GothamBold;
+    font-size: 0.75rem;
+    color: ${props => props.theme.colors.complementaryText};
+  }
+
+  button.selected {
+    color: ${props => props.theme.colors.secondary};
+    font-family: GothamBold;
+  }
+
+  span.selected {
+    background: ${props => props.theme.colors.secondary};
+    color: ${props => props.theme.colors.white};
+  }
+`;
+
+export const GridItem = styled.div`
+  height: 2rem;
+  display: flex;
+  align-items: center;
+`;
+
+export const ResultsTable = styled.table`
+  border-collapse: separate;
+  border-spacing: 0 0.5rem;
+
+  width: 100%;
+  max-width: 55rem;
+  height: fit-content;
+
+  margin: 0 auto 0 16rem;
+  text-align: start;
+
+  .centeredText {
+    text-align: center;
+    padding: 0;
+  }
+
+  thead {
+    /* height: 2rem; */
+
+    tr th {
+      text-align: start;
+      font-weight: normal;
+      color: ${props => props.theme.colors.complementaryText};
+
+      padding-left: 1rem;
+    }
+  }
+
+  tbody {
+    height: fit-content;
+
+    tr {
+      td {
+        background: ${props => props.theme.colors.lighterBackground};
+        padding: 1rem;
+        width: 20%;
+      }
+
+      td:first-child {
+        font-family: GothamBold;
+        width: 40%;
+      }
+    }
   }
 `;

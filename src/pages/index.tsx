@@ -23,6 +23,9 @@ import {
   Header,
   HeaderLeftSide,
   HeaderRightSide,
+  Aside,
+  GridItem,
+  ResultsTable,
 } from '../styles/App';
 
 const Home: NextPage = () => {
@@ -54,6 +57,117 @@ const Home: NextPage = () => {
             </div>
           </HeaderRightSide>
         </Header>
+        <main>
+          <h1>Jornadas</h1>
+
+          <div>
+            <Aside>
+              <GridItem>
+                <ThIcon className="todas" />
+              </GridItem>
+
+              <GridItem>
+                <button className="selected" type="button">
+                  Todas
+                </button>
+              </GridItem>
+
+              <GridItem>
+                <span className="selected">12</span>
+              </GridItem>
+
+              <GridItem>
+                <PaperPlaneIcon className="enviando" />
+              </GridItem>
+
+              <GridItem>
+                <button type="button">Enviando</button>
+              </GridItem>
+
+              <GridItem>
+                <span>12</span>
+              </GridItem>
+
+              <GridItem>
+                <PlayCircleIcon className="ativadas" />
+              </GridItem>
+
+              <GridItem>
+                <button type="button">Ativadas</button>
+              </GridItem>
+
+              <GridItem>
+                <span>15</span>
+              </GridItem>
+
+              <GridItem>
+                <PenIcon className="configurando" />
+              </GridItem>
+
+              <GridItem>
+                <button type="button">Configurando</button>
+              </GridItem>
+
+              <GridItem>
+                <span>25</span>
+              </GridItem>
+
+              <GridItem>
+                <BedIcon className="ociosa" />
+              </GridItem>
+
+              <GridItem>
+                <button type="button">Ociosa</button>
+              </GridItem>
+
+              <GridItem>
+                <span>45</span>
+              </GridItem>
+
+              <GridItem>
+                <CheckIcon className="concluida" />
+              </GridItem>
+
+              <GridItem>
+                <button type="button">Concluída</button>
+              </GridItem>
+
+              <GridItem>
+                <span>45</span>
+              </GridItem>
+            </Aside>
+
+            <ResultsTable>
+              <thead>
+                <tr>
+                  <th>Nome</th>
+                  <th className="centeredText">Destinatários</th>
+                  <th className="centeredText">Sucesso</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Cobrança</td>
+                  <td className="centeredText">20.210.000</td>
+                  <td className="centeredText">30%</td>
+                  <td>
+                    <PaperPlaneIcon className="enviando" /> Enviando
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>Divulgação Novos Serviços</td>
+                  <td className="centeredText">1.940.000</td>
+                  <td className="centeredText">10%</td>
+                  <td>
+                    <PaperPlaneIcon className="enviando" /> Enviando
+                  </td>
+                </tr>
+              </tbody>
+            </ResultsTable>
+          </div>
+        </main>
       </Content>
     </Container>
   );
