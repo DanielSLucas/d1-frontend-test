@@ -11,12 +11,18 @@ type IconLinkProps = {
 
 const IconLink: React.FC<IconLinkProps> = ({ to, altText, children }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const [isShowingTooltip, setIsShowingTooltip] = useState(false);
 
   const handleMouseEnter = useCallback(() => {
     setIsHovered(true);
+    setIsShowingTooltip(true);
   }, []);
+
   const handleMouseLeave = useCallback(() => {
     setIsHovered(false);
+    setTimeout(() => {
+      setIsShowingTooltip(false);
+    }, 500);
   }, []);
 
   return (
@@ -24,7 +30,7 @@ const IconLink: React.FC<IconLinkProps> = ({ to, altText, children }) => {
       <Link href={to}>
         <a>{children}</a>
       </Link>
-      {isHovered && <Tooltip>{altText}</Tooltip>}
+      {isShowingTooltip && <Tooltip isHovered={isHovered}>{altText}</Tooltip>}
     </Container>
   );
 };

@@ -1,4 +1,8 @@
-import styled, { keyframes } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
+
+type TooltipProps = {
+  isHovered: boolean;
+};
 
 export const Container = styled.div`
   position: relative;
@@ -15,12 +19,30 @@ const AppearFromRight = keyframes`
   }
 `;
 
-export const Tooltip = styled.div`
+const DisappearFromLeft = keyframes`
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(10px);
+  }
+`;
+
+export const Tooltip = styled.div<TooltipProps>`
   position: absolute;
   top: 0;
   left: 170%;
 
-  animation: ${AppearFromRight} 0.5s;
+  ${props =>
+    props.isHovered
+      ? css`
+          animation: ${AppearFromRight} 0.5s;
+        `
+      : css`
+          animation: ${DisappearFromLeft} 0.5s;
+        `}
 
   height: 2rem;
   width: fit-content;
