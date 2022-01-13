@@ -38,8 +38,8 @@ export default class MyDocument extends Document {
       <Html lang="pt-BR">
         <Head>
           <meta charSet="utf-8" />
-          {/* <meta name="viewport" content="width=device-width, initial-scale=1" /> */}
           <meta name="theme-color" content="#1A1731" />
+
           <link
             rel="stylesheet"
             href="https://maxcdn.icons8.com/fonts/line-awesome/1.1/css/line-awesome.min.css"
@@ -48,6 +48,8 @@ export default class MyDocument extends Document {
             rel="stylesheet"
             href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css"
           />
+
+          <link rel="icon" sizes="16x16" href="/favicon.ico" />
         </Head>
         <body>
           <Main />

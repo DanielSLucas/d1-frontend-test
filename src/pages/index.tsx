@@ -16,11 +16,10 @@ import {
   CheckIcon,
 } from 'react-line-awesome';
 
+import Head from 'next/head';
 import acmeImg from '../../public/images/acme2.png';
 import Button from '../components/Button';
 import Input from '../components/Input';
-
-import SideBar from '../components/SideBar';
 
 import {
   Container,
@@ -134,7 +133,11 @@ const Home: NextPage<HomeProps> = ({ APIfilters }) => {
 
   return (
     <Container>
-      <SideBar />
+      <Head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Jornadas</title>
+      </Head>
+
       {isShowingModal && (
         <ModalContainer>
           <ClickAwayListener onClickAway={toggleModal}>

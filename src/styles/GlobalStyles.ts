@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 
 export default createGlobalStyle`
   @font-face {
@@ -67,4 +67,12 @@ export default createGlobalStyle`
       font-size: 100%;
     }
   }
+`;
+
+export const Container = styled.div`
+  height: 100vh;
+  width: 100vw;
+
+  display: flex;
+  position: relative;
 `;
