@@ -1,6 +1,9 @@
-import type { NextPage } from 'next';
+/* eslint-disable react/no-array-index-key */
+import { useCallback, useMemo, useState } from 'react';
+import type { GetStaticProps, NextPage } from 'next';
 import Image from 'next/image';
 import useSWR from 'swr';
+import ClickAwayListener from 'react-click-away-listener';
 
 import {
   SearchIcon,
@@ -12,7 +15,7 @@ import {
   BedIcon,
   CheckIcon,
 } from 'react-line-awesome';
-import { useCallback, useMemo, useState } from 'react';
+
 import acmeImg from '../../public/images/acme2.png';
 import Button from '../components/Button';
 import Input from '../components/Input';
@@ -28,19 +31,23 @@ import {
   Aside,
   GridItem,
   ResultsTable,
+  ModalContainer,
+  Modal,
+  FakeTableRow,
 } from '../styles/App';
 
-type Filter = {
+type APIFilter = {
   id: number;
   name: string;
   quantity: number;
 };
 
-type filterTextAndIcon = {
-  [id: number]: {
-    icon: JSX.Element;
-    text: string;
-  };
+type Filter = {
+  id: number;
+  name: string;
+  quantity: number;
+  icon: JSX.Element;
+  text: string;
 };
 
 type Jorney = {
@@ -49,6 +56,13 @@ type Jorney = {
   recipients: string;
   success: string;
   id: string;
+};
+
+type filterTextAndIcon = {
+  [id: number]: {
+    icon: JSX.Element;
+    text: string;
+  };
 };
 
 const filtersTextAndIcons: filterTextAndIcon = {
@@ -78,27 +92,30 @@ const filtersTextAndIcons: filterTextAndIcon = {
   },
 };
 
-const Home: NextPage = () => {
-  const [selectedFilter, setSelectedFilter] = useState({
-    id: 0,
-    name: 'Todos',
-    quantity: 8,
-    icon: <ThIcon className="todas" />,
-    text: 'Todas',
-  });
+type HomeProps = {
+  APIfilters: APIFilter[];
+};
 
-  const filtersResponse = useSWR<Filter[]>(
-    'https://api-d1-test.herokuapp.com/api/filter',
-    async url => {
-      const response = await fetch(url);
+const Home: NextPage<HomeProps> = ({ APIfilters }) => {
+  const [selectedFilterIndex, setselectedFilterIndex] = useState(0);
+  const [isShowingModal, setIsShowingModal] = useState(false);
 
-      return response.json();
-    },
-  );
+  const filters: Filter[] = useMemo(() => {
+    return APIfilters.map(filter => {
+      return {
+        ...filter,
+        icon: filtersTextAndIcons[filter.id].icon,
+        text: filtersTextAndIcons[filter.id].text,
+      };
+    });
+  }, [APIfilters]);
 
   const jorneysResponse = useSWR<Jorney[]>(
     `https://api-d1-test.herokuapp.com/api/journey/${
-      selectedFilter.id === 0 ? '' : selectedFilter.id
+      filters &&
+      (filters[selectedFilterIndex].name === 'Todos'
+        ? ''
+        : filters[selectedFilterIndex].id)
     }`,
     async url => {
       const response = await fetch(url);
@@ -107,25 +124,51 @@ const Home: NextPage = () => {
     },
   );
 
-  const filters = useMemo(() => {
-    if (!filtersResponse.data) return null;
+  const handleFilterClick = useCallback((filterIndex: number) => {
+    setselectedFilterIndex(filterIndex);
+  }, []);
 
-    return filtersResponse.data.map(filter => {
-      return {
-        ...filter,
-        icon: filtersTextAndIcons[filter.id].icon,
-        text: filtersTextAndIcons[filter.id].text,
-      };
-    });
-  }, [filtersResponse.data]);
-
-  const handleFilterClick = useCallback((filter: typeof selectedFilter) => {
-    setSelectedFilter(filter);
+  const toggleModal = useCallback(() => {
+    setIsShowingModal(state => !state);
   }, []);
 
   return (
     <Container>
       <SideBar />
+      {isShowingModal && (
+        <ModalContainer>
+          <ClickAwayListener onClickAway={toggleModal}>
+            <Modal>
+              <section>
+                <header>
+                  <h2>Nova Jornada</h2>
+                  <hr />
+                </header>
+
+                <div>
+                  <p>
+                    Dê um <label htmlFor="jorneyName">nome</label> para essa
+                    Jornada
+                  </p>
+                  <Input type="text" id="jorneyName" />
+                  <span>Você poderá alterar essa informação depois.</span>
+                </div>
+
+                <footer>
+                  <div>
+                    <button type="button" onClick={toggleModal}>
+                      Continuar
+                    </button>
+                    <button type="button" onClick={toggleModal}>
+                      Cancelar
+                    </button>
+                  </div>
+                </footer>
+              </section>
+            </Modal>
+          </ClickAwayListener>
+        </ModalContainer>
+      )}
       <Content>
         <Header>
           <HeaderLeftSide>
@@ -147,7 +190,9 @@ const Home: NextPage = () => {
             </div>
 
             <div>
-              <Button icon={<PlusIcon />}>Nova Jornada</Button>
+              <Button icon={<PlusIcon />} onClick={toggleModal}>
+                Nova Jornada
+              </Button>
             </div>
           </HeaderRightSide>
         </Header>
@@ -157,16 +202,18 @@ const Home: NextPage = () => {
           <div>
             <Aside>
               {filters &&
-                filters.map(filter => (
+                filters.map((filter, i) => (
                   <>
                     <GridItem>{filter.icon}</GridItem>
 
                     <GridItem>
                       <button
                         type="button"
-                        onClick={() => handleFilterClick(filter)}
+                        onClick={() => handleFilterClick(i)}
                         className={
-                          selectedFilter.id === filter.id ? 'selected' : ''
+                          filters[selectedFilterIndex].id === filter.id
+                            ? 'selected'
+                            : ''
                         }
                       >
                         {filter.text}
@@ -176,7 +223,9 @@ const Home: NextPage = () => {
                     <GridItem>
                       <span
                         className={
-                          selectedFilter.id === filter.id ? 'selected' : ''
+                          filters[selectedFilterIndex].id === filter.id
+                            ? 'selected'
+                            : ''
                         }
                       >
                         {filter.quantity}
@@ -196,7 +245,7 @@ const Home: NextPage = () => {
                 </tr>
               </thead>
               <tbody>
-                {jorneysResponse.data &&
+                {jorneysResponse.data ? (
                   jorneysResponse.data.map(jorney => (
                     <tr key={jorney.id}>
                       <td>{jorney.name}</td>
@@ -207,7 +256,10 @@ const Home: NextPage = () => {
                         {filtersTextAndIcons[jorney.status].text}
                       </td>
                     </tr>
-                  ))}
+                  ))
+                ) : (
+                  <FakeTableRow colSpan={4} />
+                )}
               </tbody>
             </ResultsTable>
           </div>
@@ -218,3 +270,15 @@ const Home: NextPage = () => {
 };
 
 export default Home;
+
+export const getStaticProps: GetStaticProps<HomeProps> = async () => {
+  const response = await fetch('https://api-d1-test.herokuapp.com/api/filter');
+
+  const APIfilters: APIFilter[] = await response.json();
+
+  return {
+    props: {
+      APIfilters,
+    },
+  };
+};

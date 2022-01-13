@@ -5,6 +5,7 @@ export const Container = styled.div`
   width: 100vw;
 
   display: flex;
+  position: relative;
 `;
 
 export const Content = styled.div`
@@ -127,7 +128,7 @@ export const HeaderLeftSide = styled.div`
       position: absolute;
 
       left: 130%;
-      z-index: 998;
+      z-index: 98;
       white-space: nowrap;
 
       border-radius: 0.5rem;
@@ -140,7 +141,7 @@ export const HeaderLeftSide = styled.div`
         bottom: 20px;
         top: 42%;
         position: absolute;
-        z-index: 999;
+        z-index: 99;
         left: -6%;
         transform: rotate(90deg);
       }
@@ -295,4 +296,135 @@ export const ResultsTable = styled.table`
       }
     }
   }
+`;
+
+export const ModalContainer = styled.div`
+  height: 100%;
+  width: 100%;
+
+  position: absolute;
+  z-index: 900;
+  top: 0;
+  left: 0;
+
+  background: ${props => props.theme.colors.modalBackground};
+
+  display: flex;
+  justify-content: center;
+
+  animation: ${fadeIn} 0.5s;
+`;
+
+export const Modal = styled.div`
+  width: 24rem;
+  height: fit-content;
+
+  background: ${props => props.theme.colors.lighterBackground};
+
+  margin-top: 10rem;
+  padding: 1.5rem 2rem;
+
+  border: 1px solid ${props => props.theme.colors.border};
+  border-radius: 0.5rem;
+
+  box-shadow: 1px 1px 10px ${props => props.theme.colors.shadow};
+
+  font-size: 0.8125rem;
+
+  header {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+
+    h2 {
+      font-family: GothamBold;
+      font-size: 0.8125rem;
+      color: ${props => props.theme.colors.complementaryText};
+    }
+
+    hr {
+      border: 1px solid ${props => props.theme.colors.darkerBackground};
+      margin: 1rem 0;
+    }
+  }
+
+  section > div {
+    p {
+      margin-bottom: 0.5rem;
+      label {
+        font-family: GothamBold;
+      }
+    }
+
+    & > div {
+      margin-bottom: 0.25rem;
+    }
+
+    span {
+      color: ${props => props.theme.colors.complementaryText};
+    }
+  }
+
+  footer {
+    margin-top: 1.5rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    div {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      button {
+        border: none;
+        border-radius: 0.25rem;
+        background: none;
+        font-family: GothamBold;
+        padding: 0.5rem;
+      }
+
+      button:first-child {
+        margin-right: 1rem;
+        color: ${props => props.theme.colors.secondary};
+      }
+
+      button:last-child {
+        color: ${props => props.theme.colors.complementaryText};
+      }
+
+      button:hover {
+        background: ${props => props.theme.colors.background};
+      }
+    }
+  }
+`;
+
+const shimmerAnimation = keyframes`
+  0% {
+    background-position: -55rem 0;
+  }
+
+  100% {
+    background-position: 55rem 0;
+  }
+`;
+
+export const FakeTableRow = styled.td`
+  width: 100%;
+  height: 3rem;
+
+  background: linear-gradient(
+    to right,
+    #f6f7f8 0%,
+    #edeef1 20%,
+    #f6f7f8 40%,
+    #f6f7f8 100%
+  );
+
+  animation: ${shimmerAnimation} 3s;
+  animation-iteration-count: infinite;
+  animation-fill-mode: forwards;
+  animation-timing-function: linear;
 `;
