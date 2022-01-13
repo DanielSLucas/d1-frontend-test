@@ -1,5 +1,4 @@
-/* eslint-disable react/no-array-index-key */
-import { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import type { GetStaticProps, NextPage } from 'next';
 import Image from 'next/image';
 import useSWR from 'swr';
@@ -33,6 +32,7 @@ import {
   ModalContainer,
   Modal,
   FakeTableRow,
+  TableContainer,
 } from '../styles/App';
 
 type APIFilter = {
@@ -206,7 +206,7 @@ const Home: NextPage<HomeProps> = ({ APIfilters }) => {
             <Aside>
               {filters &&
                 filters.map((filter, i) => (
-                  <>
+                  <React.Fragment key={filter.id}>
                     <GridItem>{filter.icon}</GridItem>
 
                     <GridItem>
@@ -234,37 +234,52 @@ const Home: NextPage<HomeProps> = ({ APIfilters }) => {
                         {filter.quantity}
                       </span>
                     </GridItem>
-                  </>
+                  </React.Fragment>
                 ))}
             </Aside>
 
-            <ResultsTable>
-              <thead>
-                <tr>
-                  <th>Nome</th>
-                  <th className="centeredText">Destinatários</th>
-                  <th className="centeredText">Sucesso</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {jorneysResponse.data ? (
-                  jorneysResponse.data.map(jorney => (
-                    <tr key={jorney.id}>
-                      <td>{jorney.name}</td>
-                      <td className="centeredText">{jorney.recipients}</td>
-                      <td className="centeredText">{jorney.success}</td>
-                      <td>
-                        <div>{filtersTextAndIcons[jorney.status].icon}</div>
-                        {filtersTextAndIcons[jorney.status].text}
-                      </td>
+            <TableContainer>
+              <div>
+                <ResultsTable aria-colcount={4}>
+                  <thead>
+                    <tr>
+                      <th>Nome</th>
+                      <th className="centeredText">Destinatários</th>
+                      <th className="centeredText">Sucesso</th>
+                      <th>Status</th>
                     </tr>
-                  ))
-                ) : (
-                  <FakeTableRow colSpan={4} />
-                )}
-              </tbody>
-            </ResultsTable>
+                  </thead>
+                  <tbody>
+                    {jorneysResponse.data
+                      ? jorneysResponse.data.map(jorney => (
+                          <tr key={jorney.id}>
+                            <td className="nameColumn">{jorney.name}</td>
+                            <td className="centeredText">
+                              {jorney.recipients}
+                            </td>
+                            <td className="centeredText">{jorney.success}</td>
+                            <td className="statusColumn">
+                              <div>
+                                {filtersTextAndIcons[jorney.status].icon}
+                              </div>
+                              {filtersTextAndIcons[jorney.status].text}
+                            </td>
+                          </tr>
+                        ))
+                      : Array.from(
+                          { length: filters[selectedFilterIndex].quantity },
+                          (_, i) => i + 1,
+                        ).map(item => (
+                          <tr key={item}>
+                            <td colSpan={4} className="shimmer">
+                              <FakeTableRow />
+                            </td>
+                          </tr>
+                        ))}
+                  </tbody>
+                </ResultsTable>
+              </div>
+            </TableContainer>
           </div>
         </main>
       </Content>

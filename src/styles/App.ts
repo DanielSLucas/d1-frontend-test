@@ -12,7 +12,7 @@ export const Content = styled.div`
   height: 100%;
   width: 100%;
 
-  padding: 0 10rem;
+  padding: 0 10%;
 
   display: flex;
   flex-direction: column;
@@ -75,7 +75,7 @@ export const Header = styled.div`
 
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  /* justify-content: space-between; */
 `;
 
 const fadeIn = keyframes`
@@ -90,6 +90,7 @@ const fadeIn = keyframes`
 export const HeaderLeftSide = styled.div`
   display: flex;
   align-items: center;
+  margin-right: 2rem;
 
   & > div:first-child {
     position: relative;
@@ -166,8 +167,11 @@ export const HeaderLeftSide = styled.div`
 `;
 
 export const HeaderRightSide = styled.div`
-  width: 35%;
+  width: 100%;
+  max-width: 30rem;
   height: 2.5rem;
+
+  margin-left: auto;
 
   display: flex;
   align-items: center;
@@ -240,21 +244,34 @@ export const GridItem = styled.div`
   align-items: center;
 `;
 
-export const ResultsTable = styled.table`
+export const TableContainer = styled.div`
+  width: 100%;
+  height: 100%;
+
   overflow-y: scroll;
 
   ::-webkit-scrollbar {
     visibility: hidden;
   }
 
+  display: flex;
+  justify-content: center;
+
+  & > div {
+    width: 100%;
+    max-width: 60rem;
+
+    overflow-x: auto;
+    margin-left: 2rem;
+  }
+`;
+
+export const ResultsTable = styled.table`
   border-collapse: separate;
   border-spacing: 0 0.5rem;
 
   width: 100%;
-  max-width: 55rem;
-  height: fit-content;
 
-  margin-left: 16rem;
   text-align: start;
 
   .centeredText {
@@ -273,29 +290,63 @@ export const ResultsTable = styled.table`
   }
 
   tbody {
-    height: fit-content;
-
     tr {
       background: ${props => props.theme.colors.lighterBackground};
-
+      height: fit-content;
       td {
+        height: 2rem;
         padding: 1rem;
         width: 20%;
       }
 
-      td:first-child {
+      td.nameColumn {
         font-family: GothamBold;
         width: 40%;
       }
 
-      td:last-child {
+      td.statusColumn {
         display: flex;
         div {
           margin-right: 0.5rem;
         }
       }
+
+      td.shimmer {
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        height: 3rem;
+      }
     }
   }
+`;
+
+const shimmerAnimation = keyframes`
+  0% {
+    background-position: -60rem 0;
+  }
+
+  100% {
+    background-position: 60rem 0;
+  }
+`;
+
+export const FakeTableRow = styled.div`
+  width: 100%;
+  height: 100%;
+
+  background: linear-gradient(
+    to right,
+    #f6f7f8 0%,
+    #edeef1 20%,
+    #f6f7f8 40%,
+    #f6f7f8 100%
+  );
+
+  animation: ${shimmerAnimation} 3s;
+  animation-iteration-count: infinite;
+  animation-fill-mode: forwards;
+  animation-timing-function: linear;
 `;
 
 export const ModalContainer = styled.div`
@@ -399,32 +450,4 @@ export const Modal = styled.div`
       }
     }
   }
-`;
-
-const shimmerAnimation = keyframes`
-  0% {
-    background-position: -55rem 0;
-  }
-
-  100% {
-    background-position: 55rem 0;
-  }
-`;
-
-export const FakeTableRow = styled.td`
-  width: 100%;
-  height: 3rem;
-
-  background: linear-gradient(
-    to right,
-    #f6f7f8 0%,
-    #edeef1 20%,
-    #f6f7f8 40%,
-    #f6f7f8 100%
-  );
-
-  animation: ${shimmerAnimation} 3s;
-  animation-iteration-count: infinite;
-  animation-fill-mode: forwards;
-  animation-timing-function: linear;
 `;

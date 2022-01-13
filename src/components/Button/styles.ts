@@ -6,7 +6,9 @@ export const Container = styled.div`
 
   button {
     width: 100%;
+    min-width: fit-content;
     height: 100%;
+    min-height: fit-content;
 
     padding: 0.5rem 1rem;
 
