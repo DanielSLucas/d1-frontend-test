@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import Image from 'next/image';
 
 import {
@@ -11,6 +11,8 @@ import {
   ToolsIcon,
   ExchangeAltIcon,
   SignOutAltIcon,
+  SunIcon,
+  MoonIcon,
 } from 'react-line-awesome';
 
 import {
@@ -23,11 +25,22 @@ import {
   LinearGradientLine,
 } from './styles';
 
-import IconLink from '../IconLink';
+import IconWithTooltip from '../IconWithTooltip';
 
 import logoImg from '../../../public/logo.png';
 
-const SideBar: React.FC = () => {
+type SideBarProps = {
+  toogleTheme(): void;
+};
+
+const SideBar: React.FC<SideBarProps> = ({ toogleTheme }) => {
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  const handleThemeButtonClick = useCallback(() => {
+    toogleTheme();
+    setIsDarkMode(state => !state);
+  }, [toogleTheme]);
+
   return (
     <Container>
       <LinearGradientLine />
@@ -37,27 +50,27 @@ const SideBar: React.FC = () => {
         </Brand>
         <Menu>
           <MenuItem>
-            <IconLink to="#" altText="Análises">
+            <IconWithTooltip to="#" altText="Análises">
               <PieChartIcon />
-            </IconLink>
+            </IconWithTooltip>
           </MenuItem>
 
           <MenuItem>
-            <IconLink to="#" altText="Jornadas">
+            <IconWithTooltip to="#" altText="Jornadas">
               <RocketIcon />
-            </IconLink>
+            </IconWithTooltip>
           </MenuItem>
 
           <MenuItem>
-            <IconLink to="#" altText="Clientes">
+            <IconWithTooltip to="#" altText="Clientes">
               <UserFriendsIcon />
-            </IconLink>
+            </IconWithTooltip>
           </MenuItem>
 
           <MenuItem>
-            <IconLink to="#" altText="CCM Cloud">
+            <IconWithTooltip to="#" altText="CCM Cloud">
               <CloudIcon />
-            </IconLink>
+            </IconWithTooltip>
           </MenuItem>
 
           <div>
@@ -65,35 +78,49 @@ const SideBar: React.FC = () => {
           </div>
 
           <MenuItem>
-            <IconLink to="#" altText="Versção 01">
+            <IconWithTooltip to="#" altText="Versão 01">
               <ExternalLinkSquareAltIcon />
-            </IconLink>
+            </IconWithTooltip>
           </MenuItem>
         </Menu>
 
         <SecondaryMenu>
           <MenuItem>
-            <IconLink to="#" altText="Administração">
+            <IconWithTooltip to="#" altText="Administração">
               <DiamondIcon />
-            </IconLink>
+            </IconWithTooltip>
           </MenuItem>
 
           <MenuItem>
-            <IconLink to="#" altText="Help Desk">
+            <IconWithTooltip to="#" altText="Help Desk">
               <ToolsIcon />
-            </IconLink>
+            </IconWithTooltip>
           </MenuItem>
 
           <MenuItem>
-            <IconLink to="#" altText="Trocar conta">
+            <IconWithTooltip to="#" altText="Trocar conta">
               <ExchangeAltIcon />
-            </IconLink>
+            </IconWithTooltip>
           </MenuItem>
 
           <MenuItem>
-            <IconLink to="#" altText="Sair">
+            <IconWithTooltip to="#" altText="Sair">
               <SignOutAltIcon />
-            </IconLink>
+            </IconWithTooltip>
+          </MenuItem>
+
+          {/* <div>
+            <LinearGradientLine />
+          </div> */}
+
+          <MenuItem>
+            <IconWithTooltip
+              type="button"
+              altText={isDarkMode ? 'Light' : 'Dark'}
+              buttonProps={{ onClick: handleThemeButtonClick }}
+            >
+              {isDarkMode ? <SunIcon /> : <MoonIcon />}
+            </IconWithTooltip>
           </MenuItem>
         </SecondaryMenu>
       </Content>

@@ -26,6 +26,8 @@ export const Container = styled.div`
 
     border: none;
     background: transparent;
+
+    color: ${props => props.theme.colors.text};
   }
 
   & > div {

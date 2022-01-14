@@ -1,4 +1,4 @@
-import styled, { keyframes } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 
 type AsideProps = {
   isShowingFiltersMenu: boolean;
@@ -9,7 +9,6 @@ export const Container = styled.div`
   width: 100%;
 
   display: flex;
-  position: relative;
 
   overflow-y: scroll;
 `;
@@ -127,7 +126,7 @@ export const HeaderLeftSide = styled.div`
 
     font-family: GothamBold;
     font-size: 0.875rem;
-    color: #fff;
+    color: ${props => props.theme.colors.white};
 
     display: flex;
     align-items: center;
@@ -264,6 +263,7 @@ export const Aside = styled.aside<AsideProps>`
     border: 0;
     background: 0;
     text-align: start;
+    color: ${props => props.theme.colors.text};
   }
 
   span {
@@ -397,13 +397,26 @@ export const FakeTableRow = styled.div`
   width: 100%;
   height: 100%;
 
-  background: linear-gradient(
-    to right,
-    #f6f7f8 0%,
-    #edeef1 20%,
-    #f6f7f8 40%,
-    #f6f7f8 100%
-  );
+  ${props =>
+    props.theme.name === 'default'
+      ? css`
+          background: linear-gradient(
+            to right,
+            #f6f7f8 0%,
+            #edeef1 20%,
+            #f6f7f8 40%,
+            #f6f7f8 100%
+          );
+        `
+      : css`
+          background: linear-gradient(
+            to right,
+            #3f3852 0%,
+            #352f44 20%,
+            #3f3852 40%,
+            #3f3852 100%
+          );
+        `}
 
   animation: ${shimmerAnimation} 3s;
   animation-iteration-count: infinite;

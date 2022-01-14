@@ -5,7 +5,7 @@ export const Container = styled.nav`
   width: 5rem;
 
   background: ${props => props.theme.colors.primary};
-  color: #fff;
+  color: ${props => props.theme.colors.white};
 
   display: flex;
   flex-direction: column;

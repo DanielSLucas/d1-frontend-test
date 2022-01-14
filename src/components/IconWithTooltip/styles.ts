@@ -6,6 +6,14 @@ type TooltipProps = {
 
 export const Container = styled.div`
   position: relative;
+
+  button {
+    border: none;
+    background: none;
+
+    color: ${props => props.theme.colors.white};
+    font-size: 1.5rem;
+  }
 `;
 
 const AppearFromRight = keyframes`
@@ -67,7 +75,7 @@ export const Tooltip = styled.div<TooltipProps>`
   &::before {
     content: '';
     border-style: solid;
-    border-color: white transparent;
+    border-color: ${props => props.theme.colors.lighterBackground} transparent;
     border-width: 6px 6px 0 6px;
     bottom: 20px;
     top: 45%;
