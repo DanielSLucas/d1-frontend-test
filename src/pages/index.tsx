@@ -1,10 +1,4 @@
-import React, {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useState,
-} from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import type { GetStaticProps, NextPage } from 'next';
 import Image from 'next/image';
 import useSWR from 'swr';
@@ -160,7 +154,7 @@ const Home: NextPage<HomeProps> = ({ APIfilters }) => {
     setIsShowingFiltersMenu(state => !state);
   }, []);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const closeFiltersMenu = () =>
       setIsShowingFiltersMenu(window.visualViewport.width < 500);
     window.addEventListener('resize', closeFiltersMenu);
