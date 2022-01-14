@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 
 import {
   PieChartIcon,
@@ -21,7 +22,10 @@ import {
   SecondaryMenu,
   LinearGradientLine,
 } from './styles';
+
 import IconLink from '../IconLink';
+
+import logoImg from '../../../public/logo.png';
 
 const SideBar: React.FC = () => {
   return (
@@ -29,10 +33,7 @@ const SideBar: React.FC = () => {
       <LinearGradientLine />
       <Content>
         <Brand>
-          D1
-          <div>
-            <LinearGradientLine />
-          </div>
+          <Image src={logoImg} />
         </Brand>
         <Menu>
           <MenuItem>

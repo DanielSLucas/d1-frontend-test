@@ -24,21 +24,8 @@ export const Content = styled.div`
 `;
 
 export const Brand = styled.div`
-  position: relative;
-  font-family: GothamBold;
-  font-size: 2rem;
-
-  & > div {
-    width: 80%;
-    position: absolute;
-
-    top: 50%;
-    right: -0.25rem;
-
-    div {
-      height: 2px;
-    }
-  }
+  height: 3rem;
+  width: 3rem;
 `;
 
 export const Menu = styled.ul`

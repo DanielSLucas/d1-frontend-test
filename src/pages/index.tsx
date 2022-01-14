@@ -1,4 +1,10 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useState,
+} from 'react';
 import type { GetStaticProps, NextPage } from 'next';
 import Image from 'next/image';
 import useSWR from 'swr';
@@ -98,6 +104,9 @@ type HomeProps = {
 const Home: NextPage<HomeProps> = ({ APIfilters }) => {
   const [selectedFilterIndex, setselectedFilterIndex] = useState(0);
   const [isShowingModal, setIsShowingModal] = useState(false);
+  const [isShowingFiltersMenu, setIsShowingFiltersMenu] = useState(false);
+  const [jorneys, setJorneys] = useState<Jorney[]>([]);
+  const [search, setSearch] = useState('');
 
   const filters: Filter[] = useMemo(() => {
     return APIfilters.map(filter => {
@@ -123,12 +132,40 @@ const Home: NextPage<HomeProps> = ({ APIfilters }) => {
     },
   );
 
+  useEffect(() => {
+    if (jorneysResponse.data) {
+      if (!search) {
+        setJorneys(jorneysResponse.data);
+      } else {
+        const filteredJorneys = jorneysResponse.data.filter(
+          jorney =>
+            jorney.name.toLowerCase().indexOf(search.toLowerCase()) > -1,
+        );
+
+        setJorneys(filteredJorneys);
+      }
+    }
+  }, [jorneysResponse.data, search]);
+
   const handleFilterClick = useCallback((filterIndex: number) => {
     setselectedFilterIndex(filterIndex);
+    setIsShowingFiltersMenu(state => !state);
   }, []);
 
   const toggleModal = useCallback(() => {
     setIsShowingModal(state => !state);
+  }, []);
+
+  const toggleFiltersMenu = useCallback(() => {
+    setIsShowingFiltersMenu(state => !state);
+  }, []);
+
+  useLayoutEffect(() => {
+    const closeFiltersMenu = () =>
+      setIsShowingFiltersMenu(window.visualViewport.width < 500);
+    window.addEventListener('resize', closeFiltersMenu);
+    closeFiltersMenu();
+    return () => window.removeEventListener('resize', closeFiltersMenu);
   }, []);
 
   return (
@@ -189,7 +226,13 @@ const Home: NextPage<HomeProps> = ({ APIfilters }) => {
           </HeaderLeftSide>
           <HeaderRightSide>
             <div>
-              <Input icon={<SearchIcon />} type="text" placeholder="Busca" />
+              <Input
+                icon={<SearchIcon />}
+                type="text"
+                placeholder="Busca"
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+              />
             </div>
 
             <div>
@@ -203,8 +246,29 @@ const Home: NextPage<HomeProps> = ({ APIfilters }) => {
           <h1>Jornadas</h1>
 
           <div>
-            <Aside>
-              {filters &&
+            <Aside isShowingFiltersMenu={isShowingFiltersMenu}>
+              {isShowingFiltersMenu && window.visualViewport.width < 500 ? (
+                <>
+                  <GridItem>{filters[selectedFilterIndex].icon}</GridItem>
+
+                  <GridItem>
+                    <button
+                      type="button"
+                      onClick={toggleFiltersMenu}
+                      className="selected"
+                    >
+                      {filters[selectedFilterIndex].text}
+                    </button>
+                  </GridItem>
+
+                  <GridItem>
+                    <span className="selected">
+                      {filters[selectedFilterIndex].quantity}
+                    </span>
+                  </GridItem>
+                </>
+              ) : (
+                filters &&
                 filters.map((filter, i) => (
                   <React.Fragment key={filter.id}>
                     <GridItem>{filter.icon}</GridItem>
@@ -235,7 +299,8 @@ const Home: NextPage<HomeProps> = ({ APIfilters }) => {
                       </span>
                     </GridItem>
                   </React.Fragment>
-                ))}
+                ))
+              )}
             </Aside>
 
             <TableContainer>
@@ -250,8 +315,8 @@ const Home: NextPage<HomeProps> = ({ APIfilters }) => {
                     </tr>
                   </thead>
                   <tbody>
-                    {jorneysResponse.data
-                      ? jorneysResponse.data.map(jorney => (
+                    {jorneys
+                      ? jorneys.map(jorney => (
                           <tr key={jorney.id}>
                             <td className="nameColumn">{jorney.name}</td>
                             <td className="centeredText">

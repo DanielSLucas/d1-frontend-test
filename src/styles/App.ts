@@ -1,11 +1,17 @@
 import styled, { keyframes } from 'styled-components';
 
+type AsideProps = {
+  isShowingFiltersMenu: boolean;
+};
+
 export const Container = styled.div`
   height: 100%;
   width: 100%;
 
   display: flex;
   position: relative;
+
+  overflow-y: scroll;
 `;
 
 export const Content = styled.div`
@@ -22,24 +28,38 @@ export const Content = styled.div`
     height: 100%;
     width: 100%;
 
-    margin-top: 3rem;
+    margin-top: 4rem;
+
+    @media (min-width: 600px) {
+      margin-top: 1rem;
+    }
 
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+
+    @media (min-width: 768px) {
+      align-items: flex-start;
+    }
 
     h1 {
       font: 1rem GothamBold;
     }
 
     & > div {
-      height: 100%;
       width: 100%;
 
       margin-top: 2rem;
 
       display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
       flex-direction: row;
+
+      @media (min-width: 768px) {
+        justify-content: flex-start;
+        flex-wrap: nowrap;
+      }
     }
 
     .todas {
@@ -68,14 +88,18 @@ export const Content = styled.div`
   }
 `;
 
-export const Header = styled.div`
+export const Header = styled.header`
   width: 100%;
 
   padding: 2rem 0;
 
   display: flex;
   align-items: center;
-  /* justify-content: space-between; */
+  flex-wrap: wrap;
+
+  @media (min-width: 600px) {
+    flex-wrap: nowrap;
+  }
 `;
 
 const fadeIn = keyframes`
@@ -176,6 +200,11 @@ export const HeaderRightSide = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-wrap: wrap;
+
+  @media (min-width: 600px) {
+    flex-wrap: nowrap;
+  }
 
   & > div {
     width: 100%;
@@ -183,25 +212,53 @@ export const HeaderRightSide = styled.div`
   }
 
   & > div:first-child {
-    margin-right: 1rem;
-    width: 65%;
+    margin-top: 1rem;
+
+    @media (min-width: 600px) {
+      margin-right: 1rem;
+      width: 65%;
+      margin-top: 0;
+    }
   }
 
   & > div:last-child {
-    width: 35%;
+    margin-top: 0.5rem;
     white-space: nowrap;
+
+    @media (min-width: 600px) {
+      width: 35%;
+      margin-top: 0;
+    }
   }
 `;
 
-export const Aside = styled.aside`
+export const Aside = styled.aside<AsideProps>`
   height: fit-content;
 
   display: grid;
-  grid-template-columns: auto auto auto;
+  grid-template-columns: repeat(3, auto);
   grid-column-gap: 1rem;
   grid-row-gap: 0.5rem;
 
   font-size: 1rem;
+
+  @media (max-width: 500px) {
+    background: ${props => props.theme.colors.lighterBackground};
+    padding: 1rem 2rem;
+    border-radius: 0.5rem;
+  }
+
+  @media (min-width: 500px) {
+    grid-template-columns: repeat(6, auto);
+  }
+
+  @media (min-width: 700px) {
+    grid-template-columns: repeat(9, auto);
+  }
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(3, auto);
+  }
 
   button {
     border: 0;
@@ -246,7 +303,6 @@ export const GridItem = styled.div`
 
 export const TableContainer = styled.div`
   width: 100%;
-  height: 100%;
 
   overflow-y: scroll;
 
@@ -259,10 +315,16 @@ export const TableContainer = styled.div`
 
   & > div {
     width: 100%;
+    height: fit-content;
     max-width: 60rem;
 
     overflow-x: auto;
-    margin-left: 2rem;
+    margin-top: 2rem;
+
+    @media (min-width: 768px) {
+      margin-left: 2rem;
+      margin-top: 0;
+    }
   }
 `;
 
