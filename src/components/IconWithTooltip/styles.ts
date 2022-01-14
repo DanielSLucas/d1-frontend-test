@@ -13,6 +13,10 @@ export const Container = styled.div`
 
     color: ${props => props.theme.colors.white};
     font-size: 1.5rem;
+
+    &:hover {
+      color: ${props => props.theme.colors.secondary};
+    }
   }
 `;
 
