@@ -310,7 +310,7 @@ const Home: NextPage<HomeProps> = ({ APIfilters }) => {
                     </tr>
                   </thead>
                   <tbody>
-                    {jorneys
+                    {jorneys.length > 0
                       ? jorneys.map(jorney => (
                           <tr key={jorney.id}>
                             <td className="nameColumn">{jorney.name}</td>
