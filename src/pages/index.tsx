@@ -3,7 +3,6 @@ import type { GetStaticProps, NextPage } from 'next';
 import Image from 'next/image';
 import useSWR from 'swr';
 import ClickAwayListener from 'react-click-away-listener';
-
 import {
   SearchIcon,
   PlusIcon,
@@ -15,10 +14,9 @@ import {
   CheckIcon,
 } from 'react-line-awesome';
 
-import Head from 'next/head';
-import acmeImg from '../../public/images/acme2.png';
 import Button from '../components/Button';
 import Input from '../components/Input';
+import SEO from '../components/SEO';
 
 import {
   Container,
@@ -34,6 +32,8 @@ import {
   FakeTableRow,
   TableContainer,
 } from '../styles/App';
+
+import acmeImg from '../../public/images/acme2.png';
 
 type APIFilter = {
   id: number;
@@ -164,10 +164,11 @@ const Home: NextPage<HomeProps> = ({ APIfilters }) => {
 
   return (
     <Container>
-      <Head>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>Jornadas</title>
-      </Head>
+      <SEO
+        title="Jornadas"
+        description="Engage seus clientes nos melhores canais e faça cada centavo de suas comunicações valer a pena com a nossa plataforma de orquestração de canais digitais."
+        shouldExludeTitleSuffix
+      />
 
       {isShowingModal && (
         <ModalContainer>
