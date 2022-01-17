@@ -2,21 +2,34 @@ import styled, { css, keyframes } from 'styled-components';
 
 type TooltipProps = {
   isHovered: boolean;
+  iconSize?: number;
 };
 
-export const Container = styled.div`
+type ContainerProps = {
+  iconColor?: string;
+  iconSize?: number;
+};
+
+export const Container = styled.div<ContainerProps>`
   position: relative;
+
+  button,
+  a {
+    color: ${props => props.iconColor || props.theme.colors.white};
+    font-size: ${props => (props.iconSize ? `${props.iconSize}px` : '1.5rem')};
+  }
 
   button {
     border: none;
     background: none;
 
-    color: ${props => props.theme.colors.white};
-    font-size: 1.5rem;
-
     &:hover {
       color: ${props => props.theme.colors.secondary};
     }
+  }
+
+  a {
+    text-decoration: none;
   }
 `;
 
@@ -42,10 +55,10 @@ const DisappearFromLeft = keyframes`
   }
 `;
 
-export const Tooltip = styled.div<TooltipProps>`
+export const Tooltip = styled.span<TooltipProps>`
   position: absolute;
-  top: 0;
-  left: 170%;
+  top: -2px;
+  left: ${props => (props.iconSize ? `${props.iconSize + 16}px` : '2.5rem')};
 
   ${props =>
     props.isHovered

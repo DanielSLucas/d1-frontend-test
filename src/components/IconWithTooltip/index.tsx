@@ -9,6 +9,8 @@ type IconWithTooltipProps = {
   to?: string;
   altText: string;
   buttonProps?: ButtonHTMLAttributes<HTMLButtonElement>;
+  iconColor?: string;
+  iconSize?: number;
 };
 
 const IconWithTooltip: React.FC<IconWithTooltipProps> = ({
@@ -17,6 +19,8 @@ const IconWithTooltip: React.FC<IconWithTooltipProps> = ({
   altText,
   children,
   buttonProps,
+  iconColor,
+  iconSize,
 }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isShowingTooltip, setIsShowingTooltip] = useState(false);
@@ -34,7 +38,12 @@ const IconWithTooltip: React.FC<IconWithTooltipProps> = ({
   }, []);
 
   return (
-    <Container onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+    <Container
+      iconColor={iconColor}
+      iconSize={iconSize}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
       {type === 'button' ? (
         <button type="button" {...buttonProps}>
           {children}
@@ -45,7 +54,11 @@ const IconWithTooltip: React.FC<IconWithTooltipProps> = ({
         </Link>
       )}
 
-      {isShowingTooltip && <Tooltip isHovered={isHovered}>{altText}</Tooltip>}
+      {isShowingTooltip && (
+        <Tooltip isHovered={isHovered} iconSize={iconSize}>
+          {altText}
+        </Tooltip>
+      )}
     </Container>
   );
 };
