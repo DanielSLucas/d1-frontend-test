@@ -61,4 +61,30 @@ describe('Button Component', () => {
 
     cy.get(".la-plus").should('be.visible');
   });
+
+  it('Should change button backgroun-image on hover', () => {
+    mount(
+      <ThemeProvider theme={defaultTheme} >
+        <Button>Botao</Button>
+      </ThemeProvider>
+    );
+
+    cy.get('button').should('be.visible').should('have.text', 'Botao');
+
+    cy.contains('Botao')
+      .should(
+        'have.css',
+        'background-image',
+        'linear-gradient(rgb(17, 126, 255), rgb(17, 126, 255))'
+      );
+
+    cy.contains('Botao').realHover();
+
+    cy.contains('Botao')
+      .should(
+        'have.css',
+        'background-image',
+        'linear-gradient(90deg, rgb(0, 225, 255), rgb(17, 126, 255))'
+      );
+  });
 });
